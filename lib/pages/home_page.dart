@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Listagem Despesas')),
+      appBar: AppBar(title: const Text('Listagem Despesas'), automaticallyImplyLeading: false,),
       body: ListagemDespesasPage(key: listKey),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
