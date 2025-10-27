@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow_app/pages/home_page.dart';
 
+import '../controllers/user_controller.dart';
+
 class SignupForm extends StatefulWidget {
   const SignupForm({Key? key}) : super(key: key);
 
@@ -34,12 +36,38 @@ class _SignupFormState extends State<SignupForm> {
 
   Future<void> _onSignup() async {
     if (!_formKey.currentState!.validate()) return;
+
     setState(() => _loading = true);
-    await Future.delayed(const Duration(seconds: 1)); // simula chamada de API
-    setState(() => _loading = false);
-    _showSnack('Conta criada para ${_nameController.text}');
-    if (mounted) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+    try {
+      // Cria usuário no backend
+      await UserController().createUser(
+        _nameController.text.trim(),
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
+
+      // Tenta logar automaticamente para obter token
+      final token = await UserController().loginUser(
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
+
+      setState(() => _loading = false);
+
+      if (token != null && token.isNotEmpty) {
+        _showSnack('Conta criada e logado');
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        }
+      } else {
+        _showSnack('Conta criada. Faça login para continuar.');
+        if (mounted) Navigator.of(context).pop(); // volta para tela de login
+      }
+    } catch (e) {
+      setState(() => _loading = false);
+      _showSnack('Erro ao criar conta: ${e.toString()}');
     }
   }
 

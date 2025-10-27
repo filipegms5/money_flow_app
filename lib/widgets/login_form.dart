@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_flow_app/pages/home_page.dart';
 
 import '../pages/signup_page.dart';
+import '../controllers/user_controller.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -30,12 +31,29 @@ class _LoginFormState extends State<LoginForm> {
 
   Future<void> _onLogin() async {
     if (!_formKey.currentState!.validate()) return;
+
     setState(() => _loading = true);
-    await Future.delayed(const Duration(seconds: 1)); // simulate auth call
-    setState(() => _loading = false);
-    _showSnack('Logged in as ${_emailController.text}');
-    if(mounted){
-      Navigator.of(context).push(MaterialPageRoute(builder:(context) => HomePage()));
+    try {
+      final token = await UserController().loginUser(
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
+
+      setState(() => _loading = false);
+
+      if (token != null && token.isNotEmpty) {
+        _showSnack('Login realizado');
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        }
+      } else {
+        _showSnack('Falha no login: token não retornado');
+      }
+    } catch (e) {
+      setState(() => _loading = false);
+      _showSnack('Erro no login: ${e.toString()}');
     }
   }
 
