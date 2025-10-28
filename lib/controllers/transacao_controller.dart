@@ -14,7 +14,7 @@ class TransacoesController extends BaseController {
   Future<List<Transacao>> fetchTransacoes() async {
     await ensureInitialized();
 
-    final url = Uri.parse('${Endpoint.baseURL}${Endpoint.transacoes}');
+    final url = Uri.parse('${Endpoint.baseURL}${Endpoint.transacoes}${Endpoint.usuario}');
     final response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
@@ -49,7 +49,7 @@ class TransacoesController extends BaseController {
   Future<List<FormaPagamento>> fetchFormasPagamento() async {
     await ensureInitialized();
 
-    final url = Uri.parse('${Endpoint.baseURL}${Endpoint.formasPagamento}');
+    final url = Uri.parse('${Endpoint.baseURL}${Endpoint.formasPagamento}/qtd/4');
     final response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
