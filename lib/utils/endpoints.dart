@@ -10,4 +10,9 @@ class Endpoint{
   static String get loginUser => '/login';
   static String get formasPagamento => '/formas-pagamento';
   static String get estabelecimentos => '/estabelecimentos';
+
+
+  static String get metasFinanceiras => '/metas-financeiras';
+  static String get metaAtiva => '/metas-financeiras/ativa';
+  static String transacoesDaMeta(int id) => '/metas-financeiras/$id/transacoes';
 }
