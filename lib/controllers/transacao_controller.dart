@@ -29,6 +29,28 @@ class TransacoesController extends BaseController {
     }
   }
 
+  Future<List<Transacao>> fetchTransacoesPeriodo({
+    required DateTime start,
+    required DateTime end,
+  }) async {
+    await ensureInitialized();
+
+    final startIso = start.toUtc().toIso8601String();
+    final endIso = end.toUtc().toIso8601String();
+
+    final url = Uri.parse(
+      '${Endpoint.baseURL}${Endpoint.transacoes}${Endpoint.periodo}?start=$startIso&end=$endIso',
+    );
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      return jsonData.map((e) => Transacao.fromJson(e)).toList();
+    } else {
+      throw Exception('Erro ao carregar período: ${response.statusCode}');
+    }
+  }
+
   Future<bool> createTransacao(Map<String, dynamic> data) async {
     await ensureInitialized();
 

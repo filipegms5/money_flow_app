@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow_app/pages/listagem_despesas_page.dart';
+import 'package:money_flow_app/widgets/overview_receita_despesa_card.dart';
 import 'package:money_flow_app/pages/qr_code_page.dart';
 import 'package:money_flow_app/pages/registro_manual_page.dart';
 
@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Key listKey = UniqueKey();
+  Key _overviewCardKey = UniqueKey();
 
   Future<void> _openPage(Widget page) async {
     final result = await Navigator.push(
@@ -20,9 +20,9 @@ class _HomePageState extends State<HomePage> {
     );
 
     if (result != null) {
-      // Cria uma nova Key para forçar rebuild do widget filho
+      // Cria uma nova Key para forçar rebuild do widget de gráfico
       setState(() {
-        listKey = UniqueKey();
+        _overviewCardKey = UniqueKey();
       });
     }
   }
@@ -30,8 +30,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Listagem Despesas'), automaticallyImplyLeading: false,),
-      body: ListagemDespesasPage(key: listKey),
+      appBar: AppBar(title: const Text('Dashboard'), automaticallyImplyLeading: false,),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            OverviewReceitaDespesaCard(key: _overviewCardKey),
+          ],
+        ),
+      ),
       floatingActionButton: Container(
         decoration: BoxDecoration(
           color: Colors.white,
