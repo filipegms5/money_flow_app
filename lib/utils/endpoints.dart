@@ -5,4 +5,6 @@ class Endpoint{
   static String get qrCode => '/scan';
   static String get createUser => '/signup';
   static String get loginUser => '/login';
+  static String get formasPagamento => '/formas-pagamento';
+  static String get estabelecimentos => '/estabelecimentos';
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow_app/pages/listagem_despesas_page.dart';
 import 'package:money_flow_app/pages/qr_code_page.dart';
+import 'package:money_flow_app/pages/registro_manual_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,27 +13,70 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Key listKey = UniqueKey();
 
+  Future<void> _openPage(Widget page) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => page),
+    );
+
+    if (result != null) {
+      // Cria uma nova Key para forçar rebuild do widget filho
+      setState(() {
+        listKey = UniqueKey();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Listagem Despesas'), automaticallyImplyLeading: false,),
       body: ListagemDespesasPage(key: listKey),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const QrCodePage()),
-          );
-
-          if (result != null) {
-            // Cria uma nova Key para forçar rebuild do widget filho
-            setState(() {
-              listKey = UniqueKey();
-            });
-          }
-        },
-        tooltip: 'Nova Transação',
-        child: const Icon(Icons.qr_code),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: PopupMenuButton<String>(
+          onSelected: (String value) {
+            switch (value) {
+              case 'qr':
+                _openPage(const QrCodePage());
+                break;
+              case 'manual':
+                _openPage(const RegistroManualPage());
+                break;
+            }
+          },
+          tooltip: 'Nova Transação',
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: const Icon(Icons.add, color: Colors.blue),
+          ),
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            const PopupMenuItem<String>(
+              value: 'qr',
+              child: ListTile(
+                leading: Icon(Icons.qr_code),
+                title: Text('Escanear QR Code'),
+              ),
+            ),
+            const PopupMenuItem<String>(
+              value: 'manual',
+              child: ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('Registro Manual'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
