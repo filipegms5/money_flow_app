@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow_app/widgets/overview_receita_despesa_card.dart';
-import 'package:money_flow_app/widgets/recent_transactions_card.dart';
+import 'package:money_flow_app/widgets/overview/overview_receita_despesa_card.dart';
+import 'package:money_flow_app/widgets/recent/recent_transactions_card.dart';
 import 'package:money_flow_app/pages/qr_code_page.dart';
 import 'package:money_flow_app/pages/registro_manual_page.dart';
 
