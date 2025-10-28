@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow_app/widgets/overview_receita_despesa_card.dart';
+import 'package:money_flow_app/widgets/recent_transactions_card.dart';
 import 'package:money_flow_app/pages/qr_code_page.dart';
 import 'package:money_flow_app/pages/registro_manual_page.dart';
 
@@ -12,6 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Key _overviewCardKey = UniqueKey();
+  Key _recentTransactionsKey = UniqueKey();
 
   Future<void> _openPage(Widget page) async {
     final result = await Navigator.push(
@@ -20,9 +22,10 @@ class _HomePageState extends State<HomePage> {
     );
 
     if (result != null) {
-      // Cria uma nova Key para forçar rebuild do widget de gráfico
+      // Cria uma nova Key para forçar rebuild dos widgets
       setState(() {
         _overviewCardKey = UniqueKey();
+        _recentTransactionsKey = UniqueKey();
       });
     }
   }
@@ -36,6 +39,8 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             OverviewReceitaDespesaCard(key: _overviewCardKey),
+            const SizedBox(height: 16),
+            RecentTransactionsCard(key: _recentTransactionsKey),
           ],
         ),
       ),

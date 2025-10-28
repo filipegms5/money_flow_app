@@ -95,4 +95,18 @@ class TransacoesController extends BaseController {
       throw Exception('Erro ao carregar estabelecimentos: ${response.statusCode}');
     }
   }
+
+  Future<List<Transacao>> fetchTransacoesRecentes(int qtd) async {
+    await ensureInitialized();
+
+    final url = Uri.parse('${Endpoint.baseURL}${Endpoint.transacoesQtd}/$qtd');
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      return jsonData.map((e) => Transacao.fromJson(e)).toList();
+    } else {
+      throw Exception('Erro ao carregar transações recentes: ${response.statusCode}');
+    }
+  }
 }
