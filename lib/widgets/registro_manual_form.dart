@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_flow_app/controllers/transacao_controller.dart';
 import 'package:money_flow_app/models/forma_pagamento_model.dart';
+import 'package:money_flow_app/controllers/categoria_controller.dart';
+import 'package:money_flow_app/models/categoria_model.dart';
 
 class RegistroManualForm extends StatefulWidget {
   const RegistroManualForm({super.key});
@@ -13,6 +15,7 @@ class RegistroManualForm extends StatefulWidget {
 class _RegistroManualFormState extends State<RegistroManualForm> {
   final _formKey = GlobalKey<FormState>();
   final TransacoesController _controller = TransacoesController();
+  final CategoriaController _categoriaController = CategoriaController();
   
   // Controllers for text fields
   final _valorController = TextEditingController();
@@ -23,9 +26,11 @@ class _RegistroManualFormState extends State<RegistroManualForm> {
   String _selectedTipo = 'despesa';
   bool _recorrente = false;
   FormaPagamento? _selectedFormaPagamento;
+  Categoria? _selectedCategoria;
   
   // Dropdown data
   List<FormaPagamento> _formasPagamento = [];
+  List<Categoria> _categorias = [];
   bool _isLoading = true;
   bool _isSubmitting = false;
   
@@ -45,9 +50,11 @@ class _RegistroManualFormState extends State<RegistroManualForm> {
   Future<void> _loadDropdownData() async {
     try {
       final formasPagamento = await _controller.fetchFormasPagamento();
+      final categorias = await _categoriaController.fetchCategorias();
       
       setState(() {
         _formasPagamento = formasPagamento;
+        _categorias = categorias;
         _isLoading = false;
       });
     } catch (e) {
@@ -100,6 +107,7 @@ class _RegistroManualFormState extends State<RegistroManualForm> {
         if (_descricaoController.text.isNotEmpty) 'descricao': _descricaoController.text,
         'recorrente': _recorrente,
         'forma_pagamento_id': _selectedFormaPagamento!.id,
+        if (_selectedCategoria != null) 'categoria_id': _selectedCategoria!.id,
       };
       
       await _controller.createTransacao(transacaoData);
@@ -170,6 +178,23 @@ class _RegistroManualFormState extends State<RegistroManualForm> {
                 formasPagamento: _formasPagamento,
                 selectedFormaPagamento: _selectedFormaPagamento,
                 onChanged: (value) => setState(() => _selectedFormaPagamento = value),
+              ),
+              const SizedBox(height: 16.0),
+
+              // Categoria (opcional)
+              DropdownButtonFormField<Categoria>(
+                value: _selectedCategoria,
+                decoration: const InputDecoration(
+                  labelText: 'Categoria',
+                  border: OutlineInputBorder(),
+                ),
+                items: _categorias.map((cat) {
+                  return DropdownMenuItem(
+                    value: cat,
+                    child: Text(cat.nome),
+                  );
+                }).toList(),
+                onChanged: (value) => setState(() => _selectedCategoria = value),
               ),
               const SizedBox(height: 24.0),
               

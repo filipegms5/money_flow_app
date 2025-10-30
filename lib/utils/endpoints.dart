@@ -10,6 +10,7 @@ class Endpoint{
   static String get loginUser => '/login';
   static String get formasPagamento => '/formas-pagamento';
   static String get estabelecimentos => '/estabelecimentos';
+  static String get categorias => '/categorias';
 
 
   static String get metasFinanceiras => '/metas-financeiras';
