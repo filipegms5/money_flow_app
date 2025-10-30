@@ -15,6 +15,7 @@ class TransactionItem extends StatelessWidget {
     final isReceita = transacao.tipo.toLowerCase() == 'receita';
     final color = isReceita ? Colors.green : Colors.red;
     final backgroundColor = color.withOpacity(0.1);
+    final prefix = isReceita ? '+' : '-';
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -55,7 +56,7 @@ class TransactionItem extends StatelessWidget {
             ],
           ),
           Text(
-            currency.format(transacao.valor),
+            '$prefix ${currency.format(transacao.valor)}',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,

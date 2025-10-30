@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow_app/controllers/transacao_controller.dart';
 import 'package:money_flow_app/models/transacao_model.dart';
+import 'package:money_flow_app/pages/all_transactions_page.dart';
 import 'package:money_flow_app/widgets/recent/transaction_item.dart';
 
 class RecentTransactionsCard extends StatefulWidget {
@@ -29,7 +30,7 @@ class _RecentTransactionsCardState extends State<RecentTransactionsCard> {
     });
 
     try {
-      final transacoes = await _controller.fetchTransacoesRecentes(5);
+      final transacoes = await _controller.fetchTransacoesRecentes(4);
 
       setState(() {
         _transacoes = transacoes;
@@ -48,21 +49,41 @@ class _RecentTransactionsCardState extends State<RecentTransactionsCard> {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Transações Recentes',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 12),
-            _buildContent(),
-          ],
+      child: InkWell(
+        onTap: _transacoes.isNotEmpty ? () => _navigateToAllTransactions(context) : null,
+        borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Transações Recentes',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  if (_transacoes.isNotEmpty)
+                    const Icon(Icons.chevron_right, size: 28, color: Colors.grey),
+                ],
+              ),
+              const SizedBox(height: 12),
+              _buildContent(),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _navigateToAllTransactions(BuildContext context) {
+    if (_transacoes.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => AllTransactionsPage()),
+      );
+    }
   }
 
   Widget _buildContent() {
