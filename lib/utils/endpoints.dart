@@ -11,6 +11,7 @@ class Endpoint{
   static String get formasPagamento => '/formas-pagamento';
   static String get estabelecimentos => '/estabelecimentos';
   static String get categorias => '/categorias';
+  static String get gastosCategoriasUltimoMes => '/transacoes/gastos-categorias/ultimo-mes';
 
 
   static String get metasFinanceiras => '/metas-financeiras';

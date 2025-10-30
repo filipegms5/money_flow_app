@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:money_flow_app/models/transacao_model.dart';
 import 'package:money_flow_app/models/forma_pagamento_model.dart';
 import 'package:money_flow_app/models/estabelecimento_model.dart';
+import 'package:money_flow_app/models/categoria_gasto_model.dart';
 
 import '../utils/endpoints.dart';
 import 'package:http/http.dart' as http;
@@ -107,6 +108,20 @@ class TransacoesController extends BaseController {
       return jsonData.map((e) => Transacao.fromJson(e)).toList();
     } else {
       throw Exception('Erro ao carregar transações recentes: ${response.statusCode}');
+    }
+  }
+
+  Future<List<CategoriaGasto>> fetchGastosCategoriasUltimoMes() async {
+    await ensureInitialized();
+
+    final url = Uri.parse('${Endpoint.baseURL}${Endpoint.gastosCategoriasUltimoMes}');
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      return jsonData.map((e) => CategoriaGasto.fromJson(e)).toList();
+    } else {
+      throw Exception('Erro ao carregar gastos por categoria: ${response.statusCode}');
     }
   }
 }

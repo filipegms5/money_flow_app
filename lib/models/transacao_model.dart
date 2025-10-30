@@ -7,6 +7,7 @@ import 'package:money_flow_app/models/estabelecimento_model.dart';
 import 'dart:convert';
 
 import 'package:money_flow_app/models/forma_pagamento_model.dart';
+import 'package:money_flow_app/models/categoria_model.dart';
 
 Transacao transacaoFromJson(String str) => Transacao.fromJson(json.decode(str));
 
@@ -21,6 +22,7 @@ class Transacao {
   final bool recorrente;
   final FormaPagamento? formaPagamento;
   final Estabelecimento? estabelecimento;
+  final Categoria? categoria;
 
   Transacao({
     required this.id,
@@ -31,6 +33,7 @@ class Transacao {
     this.recorrente = false,
     this.formaPagamento,
     this.estabelecimento,
+    this.categoria,
   });
 
   factory Transacao.fromJson(Map<String, dynamic> json) => Transacao(
@@ -46,6 +49,9 @@ class Transacao {
     estabelecimento: json["estabelecimento"] != null
         ? Estabelecimento.fromJson(json["estabelecimento"])
         : null,
+    categoria: json["categoria"] != null
+        ? Categoria.fromJson(json["categoria"])
+        : null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -57,5 +63,6 @@ class Transacao {
     "recorrente": recorrente,
     if (formaPagamento != null) "forma_pagamento": formaPagamento!.toJson(),
     if (estabelecimento != null) "estabelecimento": estabelecimento!.toJson(),
+    if (categoria != null) "categoria_id": categoria!.id,
   };
 }

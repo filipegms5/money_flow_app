@@ -127,6 +127,7 @@ class _Details extends StatelessWidget {
   Widget build(BuildContext context) {
     final forma = transacao.formaPagamento;
     final est = transacao.estabelecimento;
+    final categoriaNome = est?.categoria?.nome ?? transacao.categoria?.nome;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,12 +152,16 @@ class _Details extends StatelessWidget {
             ],
           ),
         ],
-        // Estabelecimento (nome e categoria)
+        // Estabelecimento (nome)
         if (est != null) ...[
           const SizedBox(height: 6),
           const Text('Estabelecimento', style: TextStyle(fontWeight: FontWeight.w600)),
-          if (est.nome != null) Text('Nome: ${est.nome}'),
-          if (est.categoria != null && est.categoria!.nome.isNotEmpty) Text('Categoria: ${est.categoria!.nome}'),
+          if (est.nome != null && est.nome!.isNotEmpty) Text('Nome: ${est.nome}'),
+        ],
+        // Categoria (prioriza do estabelecimento; senão usa da transação)
+        if (categoriaNome != null && categoriaNome.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          Text('Categoria: $categoriaNome'),
         ],
       ],
     );
