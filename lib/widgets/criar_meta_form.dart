@@ -13,11 +13,11 @@ class _CriarMetaFormState extends State<CriarMetaForm> {
   final _formKey = GlobalKey<FormState>();
   final MetaFinanceiraController _controller = MetaFinanceiraController();
   
-  // Controllers for text fields
+  // Controladores para campos de texto
   final _valorController = TextEditingController();
   final _descricaoController = TextEditingController();
   
-  // Form state
+  // Estado do formulário
   DateTime _dataInicio = DateTime.now();
   DateTime _dataFim = DateTime.now().add(const Duration(days: 30));
   bool _isSubmitting = false;
@@ -107,7 +107,7 @@ class _CriarMetaFormState extends State<CriarMetaForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Valor field
+          // Campo de valor
           TextFormField(
             controller: _valorController,
             decoration: const InputDecoration(
@@ -131,7 +131,7 @@ class _CriarMetaFormState extends State<CriarMetaForm> {
           ),
           const SizedBox(height: 16.0),
           
-          // Data Início field
+          // Campo de data início
           InkWell(
             onTap: () => _selectDataInicio(context),
             child: InputDecorator(
@@ -150,7 +150,7 @@ class _CriarMetaFormState extends State<CriarMetaForm> {
           ),
           const SizedBox(height: 16.0),
           
-          // Data Fim field
+          // Campo de data fim
           InkWell(
             onTap: () => _selectDataFim(context),
             child: InputDecorator(
@@ -169,7 +169,7 @@ class _CriarMetaFormState extends State<CriarMetaForm> {
           ),
           const SizedBox(height: 16.0),
           
-          // Descrição field
+          // Campo de descrição
           TextFormField(
             controller: _descricaoController,
             decoration: const InputDecoration(
@@ -180,7 +180,7 @@ class _CriarMetaFormState extends State<CriarMetaForm> {
           ),
           const SizedBox(height: 24.0),
           
-          // Submit button
+          // Botão de enviar
           ElevatedButton(
             onPressed: _isSubmitting ? null : _submitForm,
             style: ElevatedButton.styleFrom(

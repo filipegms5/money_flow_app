@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final formaPagamento = formaPagamentoFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';

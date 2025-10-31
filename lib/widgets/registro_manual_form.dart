@@ -17,18 +17,18 @@ class _RegistroManualFormState extends State<RegistroManualForm> {
   final TransacoesController _controller = TransacoesController();
   final CategoriaController _categoriaController = CategoriaController();
   
-  // Controllers for text fields
+  // Controladores para campos de texto
   final _valorController = TextEditingController();
   final _descricaoController = TextEditingController();
   
-  // Form state
+  // Estado do formulário
   DateTime _selectedDate = DateTime.now();
   String _selectedTipo = 'despesa';
   bool _recorrente = false;
   FormaPagamento? _selectedFormaPagamento;
   Categoria? _selectedCategoria;
   
-  // Dropdown data
+  // Dados dos dropdowns
   List<FormaPagamento> _formasPagamento = [];
   List<Categoria> _categorias = [];
   bool _isLoading = true;

@@ -38,7 +38,7 @@ class _MetaFinanceiraCardState extends State<MetaFinanceiraCard> {
       final meta = await _metaController.fetchMetaAtiva();
       
       if (meta != null) {
-        // Calculate progress based on transactions
+        // Calcula o progresso baseado nas transações
         final transacoes = await _transacoesController.fetchTransacoesPeriodo(
           start: meta.dataInicio,
           end: meta.dataFim,
@@ -115,7 +115,7 @@ class _MetaFinanceiraCardState extends State<MetaFinanceiraCard> {
           builder: (context) => DetalhesMetaPage(meta: _metaAtiva!),
         ),
       ).then((_) {
-        _loadData(); // Reload when returning from detail page
+        _loadData(); // Recarrega quando retorna da página de detalhes
       });
     }
   }
@@ -249,7 +249,7 @@ class _GoalProgressView extends StatelessWidget {
         
         const SizedBox(height: 12),
         
-        // Progress bar
+        // Barra de progresso
         LinearProgressIndicator(
           value: progressPercentage,
           backgroundColor: Colors.grey[300],

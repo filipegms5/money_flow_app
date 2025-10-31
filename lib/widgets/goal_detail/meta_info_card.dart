@@ -18,7 +18,7 @@ class MetaInfoCard extends StatelessWidget {
     final currency = NumberFormat.simpleCurrency(locale: 'pt_BR');
     final dateFormat = DateFormat('dd/MM/yyyy');
     
-    // Calculate progress
+    // Calcula o progresso
     double receitas = 0;
     double despesas = 0;
     for (final t in transacoes) {
@@ -69,7 +69,7 @@ class MetaInfoCard extends StatelessWidget {
             
             const SizedBox(height: 16),
             
-            // Progress bar
+            // Barra de progresso
             LinearProgressIndicator(
               value: progressPercentage,
               backgroundColor: Colors.grey[300],

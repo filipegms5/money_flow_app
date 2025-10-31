@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
+/// Classe responsável por definir os temas da aplicação (claro e escuro)
 class AppTheme {
+  /// Tema claro da aplicação
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
@@ -39,8 +41,14 @@ class AppTheme {
       color: AppColors.light.divider,
       thickness: 1,
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: TextStyle(color: AppColors.light.textSecondary),
+      hintStyle: TextStyle(color: AppColors.light.textTertiary),
+      filled: false,
+    ),
   );
 
+  /// Tema escuro da aplicação
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
@@ -78,8 +86,17 @@ class AppTheme {
       color: AppColors.dark.divider,
       thickness: 1,
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: TextStyle(color: AppColors.dark.textSecondary),
+      hintStyle: TextStyle(color: AppColors.dark.textTertiary),
+      filled: false,
+    ),
   );
 
+  /// Retorna as cores apropriadas baseadas no tema atual do contexto
+  /// 
+  /// Se o tema atual for escuro, retorna [AppColors.dark],
+  /// caso contrário, retorna [AppColors.light]
   static AppColors getColors(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? AppColors.dark

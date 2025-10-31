@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final transacao = transacaoFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'package:money_flow_app/models/estabelecimento_model.dart';

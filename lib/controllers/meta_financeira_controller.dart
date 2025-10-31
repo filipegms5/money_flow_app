@@ -19,7 +19,7 @@ class MetaFinanceiraController extends BaseController {
       if (jsonData == null) return null;
       return MetaFinanceira.fromJson(jsonData);
     } else if (response.statusCode == 404) {
-      return null; // No active goal
+      return null; // Sem metas ativas
     } else {
       throw Exception('Erro ao carregar meta ativa: ${response.statusCode}');
     }
@@ -56,7 +56,7 @@ class MetaFinanceiraController extends BaseController {
       if (jsonData is List) {
         transacoesList = jsonData;
       } else if (jsonData is Map) {
-        // Backend returns {despesas: [...], receitas: [...]}
+        // Backend retorna {despesas: [...], receitas: [...]}
         if (jsonData.containsKey('despesas')) {
           transacoesList.addAll(jsonData['despesas'] as List);
         }

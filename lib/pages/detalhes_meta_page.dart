@@ -58,7 +58,7 @@ class _DetalhesMetaPageState extends State<DetalhesMetaPage> {
     );
 
     if (result != null) {
-      // Return to home with refresh signal
+      // Retorna para a home com sinal de atualização
       Navigator.pop(context, true);
     }
   }

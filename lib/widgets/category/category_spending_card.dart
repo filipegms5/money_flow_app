@@ -134,17 +134,17 @@ class _CategorySpendingCardState extends State<CategorySpendingCard> {
   }
 
   List<Color> _fixedColors() => const [
-        Color(0xFF2196F3), // blue
-        Color(0xFF3F51B5), // indigo
-        Color(0xFF673AB7), // deepPurple
-        Color(0xFF9C27B0), // purple
-        Color(0xFF00BCD4), // cyan
-        Color(0xFF03A9F4), // lightBlue
-        Color(0xFF9E9E9E), // grey
-        Color(0xFF795548), // brown
-        Color(0xFF607D8B), // blueGrey
-        Color(0xFFFFC107), // amber (não é vermelho/verde)
-        Color(0xFFFF9800), // orange (não é vermelho/verde)
+        Color(0xFF2196F3), // azul
+        Color(0xFF3F51B5), // índigo
+        Color(0xFF673AB7), // roxo escuro
+        Color(0xFF9C27B0), // roxo
+        Color(0xFF00BCD4), // ciano
+        Color(0xFF03A9F4), // azul claro
+        Color(0xFF9E9E9E), // cinza
+        Color(0xFF795548), // marrom
+        Color(0xFF607D8B), // azul acinzentado
+        Color(0xFFFFC107), // âmbar 
+        Color(0xFFFF9800), // laranja 
       ];
 }
 

@@ -40,7 +40,7 @@ class _AllTransactionsPageState extends State<AllTransactionsPage> {
         _categorias = categorias;
       });
     } catch (e) {
-      // Handle error silently or show snackbar if needed
+      // Trata o erro silenciosamente ou mostra snackbar se necessário
     }
   }
 
@@ -68,14 +68,14 @@ class _AllTransactionsPageState extends State<AllTransactionsPage> {
   void _applyFilter(DateTime? startDate, DateTime? endDate, String descriptionText, Categoria? categoria) {
     setState(() {
       _filteredTransacoes = _transacoes.where((t) {
-        // Date filter
+        // Filtro de data
         bool dateMatch = true;
         if (startDate != null && endDate != null) {
           dateMatch = t.data.isAfter(startDate.subtract(const Duration(days: 1))) &&
                       t.data.isBefore(endDate.add(const Duration(days: 1)));
         }
 
-        // Description filter
+        // Filtro de descrição
         bool descriptionMatch = true;
         final description = descriptionText.toLowerCase();
         if (description.isNotEmpty) {
@@ -83,13 +83,13 @@ class _AllTransactionsPageState extends State<AllTransactionsPage> {
           descriptionMatch = transacaoDescricao.contains(description);
         }
 
-        // Category filter
+        // Filtro de categoria
         bool categoryMatch = true;
         if (categoria != null) {
           final transacaoCategoriaId = t.categoria?.id ?? t.estabelecimento?.categoria?.id;
           categoryMatch = transacaoCategoriaId == categoria.id;
         } else {
-          // If "Todas" is selected (null), include all transactions including those without category
+          // Se "Todas" for selecionada (null), inclui todas as transações incluindo as sem categoria
           categoryMatch = true;
         }
 
