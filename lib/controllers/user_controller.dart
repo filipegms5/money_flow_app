@@ -85,4 +85,47 @@ class UserController {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');
   }
+
+  // Faz logout no servidor e remove o token localmente
+  static Future<void> logoutUser() async {
+    final token = await getStoredToken();
+    final url = Uri.parse('${Endpoint.baseURL}${Endpoint.logoutUser}');
+
+    try {
+      final headers = <String, String>{
+        'Content-Type': 'application/json',
+      };
+
+      if (token != null && token.isNotEmpty) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final response = await http
+          .post(
+            url,
+            headers: headers,
+            body: jsonEncode({}),
+          )
+          .timeout(const Duration(seconds: 6));
+
+      // Remove o token localmente independente da resposta do servidor
+      await clearToken();
+
+      if (response.statusCode != 200 && response.statusCode != 204) {
+        throw Exception('Erro ao fazer logout: ${response.statusCode}');
+      }
+    } on TimeoutException {
+      // Remove o token localmente mesmo se houver timeout
+      await clearToken();
+      throw Exception('Tempo esgotado ao fazer logout. Você foi desconectado localmente.');
+    } on SocketException {
+      // Remove o token localmente mesmo se não houver conexão
+      await clearToken();
+      throw Exception('Não foi possível conectar ao servidor. Você foi desconectado localmente.');
+    } catch (e) {
+      // Remove o token localmente em caso de erro
+      await clearToken();
+      throw Exception('Erro ao fazer logout: $e');
+    }
+  }
 }

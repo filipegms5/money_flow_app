@@ -126,7 +126,7 @@ class _LoginFormState extends State<LoginForm> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: _onSignup,
-                  child: const Text('Sign up'),
+                  child: const Text('Não possui conta? Cadastre-se aqui'),
                 ),
               ),
             ],
