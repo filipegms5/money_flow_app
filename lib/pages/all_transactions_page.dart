@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:money_flow_app/controllers/transacao_controller.dart';
+import 'package:money_flow_app/controllers/categoria_controller.dart';
 import 'package:money_flow_app/models/transacao_model.dart';
-import 'package:money_flow_app/widgets/recent/transaction_item.dart';
+import 'package:money_flow_app/models/categoria_model.dart';
+import 'package:money_flow_app/widgets/transactions/transactions_filter_card.dart';
+import 'package:money_flow_app/widgets/transactions/transactions_list_card.dart';
 
 class AllTransactionsPage extends StatefulWidget {
   const AllTransactionsPage({super.key});
@@ -13,19 +15,32 @@ class AllTransactionsPage extends StatefulWidget {
 
 class _AllTransactionsPageState extends State<AllTransactionsPage> {
   final TransacoesController _controller = TransacoesController();
+  final CategoriaController _categoriaController = CategoriaController();
 
   bool _loading = true;
   String? _error;
   List<Transacao> _transacoes = [];
   List<Transacao> _filteredTransacoes = [];
 
-  DateTime? _startDate;
-  DateTime? _endDate;
+  List<Categoria> _categorias = [];
 
   @override
   void initState() {
     super.initState();
     _loadAllTransactions();
+    _loadCategorias();
+  }
+
+
+  Future<void> _loadCategorias() async {
+    try {
+      final categorias = await _categoriaController.fetchCategorias();
+      setState(() {
+        _categorias = categorias;
+      });
+    } catch (e) {
+      // Handle error silently or show snackbar if needed
+    }
   }
 
   Future<void> _loadAllTransactions() async {
@@ -49,53 +64,41 @@ class _AllTransactionsPageState extends State<AllTransactionsPage> {
     }
   }
 
-  Future<void> _selectStartDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _startDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != _startDate) {
-      setState(() {
-        _startDate = picked;
-      });
-    }
-  }
+  void _applyFilter(DateTime? startDate, DateTime? endDate, String descriptionText, Categoria? categoria) {
+    setState(() {
+      _filteredTransacoes = _transacoes.where((t) {
+        // Date filter
+        bool dateMatch = true;
+        if (startDate != null && endDate != null) {
+          dateMatch = t.data.isAfter(startDate.subtract(const Duration(days: 1))) &&
+                      t.data.isBefore(endDate.add(const Duration(days: 1)));
+        }
 
-  Future<void> _selectEndDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _endDate ?? DateTime.now(),
-      firstDate: _startDate ?? DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != _endDate) {
-      setState(() {
-        _endDate = picked;
-      });
-    }
-  }
+        // Description filter
+        bool descriptionMatch = true;
+        final description = descriptionText.toLowerCase();
+        if (description.isNotEmpty) {
+          final transacaoDescricao = t.descricao?.toLowerCase() ?? '';
+          descriptionMatch = transacaoDescricao.contains(description);
+        }
 
-  void _applyFilter() {
-    if (_startDate != null && _endDate != null) {
-      setState(() {
-        _filteredTransacoes = _transacoes.where((t) {
-          return t.data.isAfter(_startDate!.subtract(const Duration(days: 1))) &&
-                 t.data.isBefore(_endDate!.add(const Duration(days: 1)));
-        }).toList();
-      });
-    } else {
-      setState(() {
-        _filteredTransacoes = _transacoes;
-      });
-    }
+        // Category filter
+        bool categoryMatch = true;
+        if (categoria != null) {
+          final transacaoCategoriaId = t.categoria?.id ?? t.estabelecimento?.categoria?.id;
+          categoryMatch = transacaoCategoriaId == categoria.id;
+        } else {
+          // If "Todas" is selected (null), include all transactions including those without category
+          categoryMatch = true;
+        }
+
+        return dateMatch && descriptionMatch && categoryMatch;
+      }).toList();
+    });
   }
 
   void _clearFilter() {
     setState(() {
-      _startDate = null;
-      _endDate = null;
       _filteredTransacoes = _transacoes;
     });
   }
@@ -108,158 +111,21 @@ class _AllTransactionsPageState extends State<AllTransactionsPage> {
         padding: const EdgeInsets.only(bottom: 32.0),
         child: Column(
           children: [
-            _buildFilterSection(),
-            Expanded(child: _buildTransactionsList()),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterSection() {
-    final dateFormat = DateFormat('dd/MM/yyyy');
-
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.all(16.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text('Filtrar por Data', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: InkWell(
-                    onTap: () => _selectStartDate(context),
-                    child: InputDecorator(
-                      decoration: const InputDecoration(
-                        labelText: 'De',
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            _startDate != null ? dateFormat.format(_startDate!) : 'Selecione',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          const Icon(Icons.calendar_today, size: 20),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: InkWell(
-                    onTap: () => _selectEndDate(context),
-                    child: InputDecorator(
-                      decoration: const InputDecoration(
-                        labelText: 'Até',
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            _endDate != null ? dateFormat.format(_endDate!) : 'Selecione',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          const Icon(Icons.calendar_today, size: 20),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            TransactionsFilterCard(
+              categorias: _categorias,
+              onFilterApply: _applyFilter,
+              onFilterClear: _clearFilter,
             ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: _clearFilter,
-                    child: const Text('Limpar'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _applyFilter,
-                    child: const Text('Filtrar'),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTransactionsList() {
-    if (_loading) {
-      return Card(
-        elevation: 2,
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: const Padding(
-          padding: EdgeInsets.all(40.0),
-          child: Center(child: CircularProgressIndicator()),
-        ),
-      );
-    }
-
-    if (_error != null) {
-      return Card(
-        elevation: 2,
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: Padding(
-          padding: const EdgeInsets.all(40.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Erro: $_error', style: const TextStyle(color: Colors.red)),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _loadAllTransactions,
-                child: const Text('Tentar novamente'),
+            Expanded(
+              child: TransactionsListCard(
+                loading: _loading,
+                error: _error,
+                transactions: _filteredTransacoes,
+                onRetry: _loadAllTransactions,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
-    }
-
-    if (_filteredTransacoes.isEmpty) {
-      return Card(
-        elevation: 2,
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: const Padding(
-          padding: EdgeInsets.all(40.0),
-          child: Center(child: Text('Nenhuma transação encontrada')),
-        ),
-      );
-    }
-
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: ListView.builder(
-        padding: const EdgeInsets.all(8.0),
-        itemCount: _filteredTransacoes.length,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.only(bottom: 8),
-            child: TransactionItem(transacao: _filteredTransacoes[index]),
-          );
-        },
       ),
     );
   }
