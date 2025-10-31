@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import '../widgets/login_form.dart';
+import '../controllers/theme_controller.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  final ThemeController themeController;
+  
+  const LoginPage({Key? key, required this.themeController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class LoginPage extends StatelessWidget {
             child: Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: const LoginForm(),
+                child: LoginForm(themeController: themeController),
               ),
             ),
           ),

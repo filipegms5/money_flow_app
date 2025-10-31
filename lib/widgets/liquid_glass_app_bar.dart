@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:money_flow_app/theme/app_theme.dart';
+import 'package:money_flow_app/theme/app_colors.dart';
 
 class LiquidGlassAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? title;
@@ -53,7 +55,9 @@ class LiquidGlassAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
-            color: backgroundColor ?? Colors.white.withOpacity(0.1),
+            color: backgroundColor ?? (Theme.of(context).brightness == Brightness.dark 
+                ? AppColors.dark.glassOverlay 
+                : AppColors.light.glassOverlay),
           ),
         ),
       ),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow_app/widgets/signup_form.dart';
+import 'package:money_flow_app/controllers/theme_controller.dart';
 
 class SignupPage extends StatelessWidget {
-  const SignupPage({Key? key}) : super(key: key);
+  final ThemeController themeController;
+  
+  const SignupPage({Key? key, required this.themeController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class SignupPage extends StatelessWidget {
             child: Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: const SignupForm(),
+                child: SignupForm(themeController: themeController),
               ),
             ),
           ),

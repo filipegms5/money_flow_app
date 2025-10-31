@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:money_flow_app/pages/home_page.dart';
 
 import '../controllers/user_controller.dart';
+import '../controllers/theme_controller.dart';
 
 class SignupForm extends StatefulWidget {
-  const SignupForm({Key? key}) : super(key: key);
+  final ThemeController themeController;
+  
+  const SignupForm({Key? key, required this.themeController}) : super(key: key);
 
   @override
   State<SignupForm> createState() => _SignupFormState();
@@ -58,7 +61,7 @@ class _SignupFormState extends State<SignupForm> {
         _showSnack('Conta criada e logado');
         if (mounted) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomePage()),
+            MaterialPageRoute(builder: (context) => HomePage(themeController: widget.themeController)),
           );
         }
       } else {

@@ -3,9 +3,12 @@ import 'package:money_flow_app/pages/home_page.dart';
 
 import '../pages/signup_page.dart';
 import '../controllers/user_controller.dart';
+import '../controllers/theme_controller.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({Key? key}) : super(key: key);
+  final ThemeController themeController;
+  
+  const LoginForm({Key? key, required this.themeController}) : super(key: key);
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -45,7 +48,7 @@ class _LoginFormState extends State<LoginForm> {
         _showSnack('Login realizado');
         if (mounted) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomePage()),
+            MaterialPageRoute(builder: (context) => HomePage(themeController: widget.themeController)),
           );
         }
       } else {
@@ -58,7 +61,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _onSignup() {
-    Navigator.of(context).push(MaterialPageRoute(builder:(context) => SignupPage()));
+    Navigator.of(context).push(MaterialPageRoute(builder:(context) => SignupPage(themeController: widget.themeController)));
   }
 
   @override
