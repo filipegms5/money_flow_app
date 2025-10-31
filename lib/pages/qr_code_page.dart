@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:money_flow_app/controllers/qr_code_controller.dart';
+import 'package:money_flow_app/widgets/liquid_glass_app_bar.dart';
 
 class QrCodePage extends StatefulWidget {
   const QrCodePage({super.key});
@@ -22,8 +23,8 @@ class _QrCodePageState extends State<QrCodePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Escanear QR Code"),
+      appBar: const LiquidGlassAppBar(
+        titleText: "Escanear QR Code",
         centerTitle: true,
       ),
       body: Column(

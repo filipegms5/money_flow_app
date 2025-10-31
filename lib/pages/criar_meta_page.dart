@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow_app/widgets/criar_meta_form.dart';
+import 'package:money_flow_app/widgets/liquid_glass_app_bar.dart';
 
 class CriarMetaPage extends StatelessWidget {
   const CriarMetaPage({super.key});
@@ -7,7 +8,9 @@ class CriarMetaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Criar Meta Financeira')),
+      appBar: const LiquidGlassAppBar(
+        titleText: 'Criar Meta Financeira',
+      ),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),

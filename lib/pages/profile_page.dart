@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow_app/controllers/user_controller.dart';
 import 'package:money_flow_app/pages/login_page.dart';
+import 'package:money_flow_app/widgets/liquid_glass_app_bar.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -26,7 +27,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Perfil')),
+      appBar: const LiquidGlassAppBar(
+        titleText: 'Perfil',
+      ),
       body: Column(
         children: [
           Card(

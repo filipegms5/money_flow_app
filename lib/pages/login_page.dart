@@ -6,13 +6,32 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final topPadding = screenHeight * 0.12; // ~25% abaixo do topo (onde estava AppBar ~56px)
+    
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: const LoginForm(),
-        ),
+      body: Column(
+        children: [
+          SizedBox(height: topPadding),
+          const Center(
+            child: Text(
+              'Entrar',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 32),
+          Expanded(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: const LoginForm(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

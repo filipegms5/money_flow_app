@@ -6,6 +6,7 @@ import 'package:money_flow_app/pages/criar_meta_page.dart';
 import 'package:money_flow_app/widgets/goal_detail/create_meta_button.dart';
 import 'package:money_flow_app/widgets/goal_detail/meta_info_card.dart';
 import 'package:money_flow_app/widgets/goal_detail/meta_transactions_card.dart';
+import 'package:money_flow_app/widgets/liquid_glass_app_bar.dart';
 
 class DetalhesMetaPage extends StatefulWidget {
   final MetaFinanceira meta;
@@ -65,8 +66,8 @@ class _DetalhesMetaPageState extends State<DetalhesMetaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detalhes da Meta'),
+      appBar: LiquidGlassAppBar(
+        titleText: 'Detalhes da Meta',
         actions: [
           CreateMetaButton(onPressed: _createNovaMeta),
         ],

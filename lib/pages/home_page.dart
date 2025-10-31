@@ -6,6 +6,7 @@ import 'package:money_flow_app/widgets/category/category_spending_card.dart';
 import 'package:money_flow_app/pages/qr_code_page.dart';
 import 'package:money_flow_app/pages/registro_manual_page.dart';
 import 'package:money_flow_app/pages/profile_page.dart';
+import 'package:money_flow_app/widgets/liquid_glass_app_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,8 +41,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dashboard'),
+      appBar: LiquidGlassAppBar(
+        titleText: 'Dashboard',
         automaticallyImplyLeading: false,
         actions: [
           Container(

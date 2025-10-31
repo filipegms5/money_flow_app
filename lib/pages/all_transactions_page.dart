@@ -5,6 +5,7 @@ import 'package:money_flow_app/models/transacao_model.dart';
 import 'package:money_flow_app/models/categoria_model.dart';
 import 'package:money_flow_app/widgets/transactions/transactions_filter_card.dart';
 import 'package:money_flow_app/widgets/transactions/transactions_list_card.dart';
+import 'package:money_flow_app/widgets/liquid_glass_app_bar.dart';
 
 class AllTransactionsPage extends StatefulWidget {
   const AllTransactionsPage({super.key});
@@ -106,7 +107,9 @@ class _AllTransactionsPageState extends State<AllTransactionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Todas as Transações')),
+      appBar: const LiquidGlassAppBar(
+        titleText: 'Todas as Transações',
+      ),
       body: Padding(
         padding: const EdgeInsets.only(bottom: 32.0),
         child: Column(

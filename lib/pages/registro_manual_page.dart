@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow_app/pages/qr_code_page.dart';
 import 'package:money_flow_app/widgets/registro_manual_form.dart';
+import 'package:money_flow_app/widgets/liquid_glass_app_bar.dart';
 
 class RegistroManualPage extends StatelessWidget {
   const RegistroManualPage({super.key});
@@ -8,8 +9,8 @@ class RegistroManualPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registro Manual'),
+      appBar: LiquidGlassAppBar(
+        titleText: 'Registro Manual',
         actions: [
           IconButton(
             icon: const Icon(Icons.qr_code_scanner),
