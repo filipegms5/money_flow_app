@@ -92,11 +92,11 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.getColors(context).cardBackground,
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: AppTheme.getColors(context).shadowColor,
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
