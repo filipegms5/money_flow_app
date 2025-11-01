@@ -1,0 +1,268 @@
+================================================================================
+                    GUIA PASSO A PASSO - MONEY FLOW APP
+                  Como rodar o aplicativo no Android Studio
+================================================================================
+
+PRÉ-REQUISITOS
+================================================================================
+
+1. Android Studio instalado (versão recente)
+   - Baixe em: https://developer.android.com/studio
+
+2. Flutter SDK instalado e configurado
+   - Baixe em: https://docs.flutter.dev/get-started/install
+   - Configure o PATH do sistema para incluir o Flutter
+   - Verifique a instalação executando: flutter doctor
+
+3. Java Development Kit (JDK) instalado
+   - Recomendado: JDK 17 ou superior
+
+4. Android SDK instalado via Android Studio
+   - Abra o Android Studio
+   - Vá em: File > Settings > Appearance & Behavior > System Settings > Android SDK
+   - Instale o Android SDK Platform-Tools e Android SDK Build-Tools
+
+5. Backend da aplicação rodando
+   - O app se conecta ao backend na URL: http://10.0.2.2:8000
+   - Esta URL é usada pelo emulador Android para acessar localhost da máquina
+   - Certifique-se de que o backend está rodando na porta 8000
+
+
+PASSO 1: CONFIGURAR O ANDROID STUDIO
+================================================================================
+
+1. Abra o Android Studio
+
+2. Se for a primeira vez, execute o Setup Wizard:
+   - Aceite os termos e condições
+   - Baixe os componentes necessários (Android SDK, Android SDK Platform, etc.)
+   - Aguarde a conclusão do download
+
+3. Instale os plugins necessários:
+   - Vá em: File > Settings > Plugins (ou Configure > Plugins)
+   - Procure por "Flutter" e instale
+   - Instale também o plugin "Dart" (geralmente vem junto com Flutter)
+   - Reinicie o Android Studio após a instalação
+
+
+PASSO 2: ABRIR O PROJETO
+================================================================================
+
+1. No Android Studio, clique em "Open" ou "Open an Existing Project"
+
+2. Navegue até a pasta do projeto (money_flow_app) e selecione-a
+
+3. Aguarde o Android Studio indexar os arquivos e baixar as dependências
+   - Isso pode levar alguns minutos na primeira vez
+
+4. Se solicitado, permita que o Android Studio configure o projeto
+
+
+PASSO 3: CONFIGURAR O FLUTTER SDK (se necessário)
+================================================================================
+
+1. No Android Studio, vá em: File > Settings > Languages & Frameworks > Flutter
+
+2. Configure o caminho do Flutter SDK:
+   - Clique em "..." ao lado de "Flutter SDK path"
+   - Navegue até onde o Flutter está instalado (exemplo: C:\flutter ou /home/usuario/flutter)
+   - Selecione a pasta do Flutter
+
+3. Clique em "Apply" e depois em "OK"
+
+
+PASSO 4: INSTALAR DEPENDÊNCIAS DO PROJETO
+================================================================================
+
+1. Abra o terminal no Android Studio:
+   - Menu: View > Tool Windows > Terminal
+   - Ou pressione: Alt + F12 (Windows/Linux) ou Option + F12 (Mac)
+
+2. Execute o comando para instalar as dependências:
+   
+   flutter pub get
+
+3. Aguarde o Flutter baixar e instalar todas as dependências listadas no pubspec.yaml:
+   - fl_chart
+   - http
+   - intl
+   - mobile_scanner
+   - shared_preferences
+   - cupertino_icons
+
+
+PASSO 5: CONFIGURAR UM EMULADOR ANDROID
+================================================================================
+
+1. No Android Studio, vá em: Tools > Device Manager
+
+2. Clique em "Create Device" para criar um novo emulador
+
+3. Escolha um dispositivo:
+   - Recomendado: Pixel 9
+   - Clique em "Next"
+
+4. Escolha uma imagem do sistema:
+   - Recomendado: Android 11 (API 30) ou superior
+   - Se não tiver, clique em "Download" ao lado da imagem desejada
+   - Aguarde o download e depois clique em "Next"
+
+5. Configure o dispositivo:
+   - Dê um nome ao emulador (ex: "Pixel_7_API_33")
+   - Clique em "Finish"
+
+6. Inicie o emulador:
+   - Na lista de dispositivos, clique no botão "Play" ao lado do emulador criado
+   - Aguarde o emulador inicializar completamente
+
+
+ALTERNATIVA: CONFIGURAR DISPOSITIVO FÍSICO
+================================================================================
+
+1. Habilite o modo desenvolvedor no seu dispositivo Android:
+   - Vá em: Configurações > Sobre o telefone
+   - Toque 7 vezes em "Número da compilação"
+   - Volte para Configurações > Opções do desenvolvedor
+   - Ative "Depuração USB"
+
+2. Conecte o dispositivo via USB ao computador
+
+3. No Android Studio, o dispositivo aparecerá na lista de dispositivos disponíveis
+
+4. IMPORTANTE: Para usar dispositivo físico, você precisará ajustar a URL do backend:
+   - Edite o arquivo: lib/utils/endpoints.dart
+   - Altere 'http://10.0.2.2:8000' para o IP da sua máquina na rede local
+   - Exemplo: 'http://192.168.1.100:8000' (substitua pelo seu IP)
+
+
+PASSO 6: VERIFICAR CONFIGURAÇÃO DO BACKEND
+================================================================================
+
+1. Certifique-se de que o backend está rodando:
+   - Para emulador: o backend deve estar em http://localhost:8000
+   - Para dispositivo físico: use o IP da máquina (ex: http://192.168.1.100:8000)
+
+2. Verifique a URL configurada no projeto:
+   - Abra o arquivo: lib/utils/endpoints.dart
+   - Confirme que baseURL está correto:
+     * Emulador: 'http://10.0.2.2:8000'
+     * Dispositivo físico: 'http://SEU_IP_AQUI:8000'
+
+
+PASSO 7: EXECUTAR O APLICATIVO
+================================================================================
+
+1. Selecione o dispositivo ou emulador:
+   - No topo do Android Studio, use o dropdown de dispositivos
+   - Selecione o emulador ou dispositivo físico que deseja usar
+
+2. Execute o aplicativo:
+   - Clique no botão verde "Run" (▶) na barra de ferramentas
+   - Ou pressione: Shift + F10 (Windows/Linux) ou Control + R (Mac)
+   - Ou vá em: Run > Run 'main.dart'
+
+3. Aguarde o build:
+   - Na primeira execução, o build pode demorar vários minutos
+   - O Android Studio compilará o código Dart e criará o APK
+   - Uma barra de progresso aparecerá na parte inferior do Android Studio
+
+4. O app será instalado e executado automaticamente no dispositivo/emulador selecionado
+
+
+PASSO 8: RESOLVER PROBLEMAS COMUNS
+================================================================================
+
+PROBLEMA: "Flutter SDK not found"
+SOLUÇÃO:
+- Configure o caminho do Flutter SDK em: File > Settings > Languages & Frameworks > Flutter
+
+PROBLEMA: "Gradle sync failed"
+SOLUÇÃO:
+- Vá em: File > Invalidate Caches / Restart
+- Selecione "Invalidate and Restart"
+- Execute novamente: flutter pub get
+
+PROBLEMA: "No devices found"
+SOLUÇÃO:
+- Certifique-se de que o emulador está rodando OU o dispositivo está conectado
+- Execute: flutter devices (no terminal) para ver dispositivos disponíveis
+
+PROBLEMA: "Connection refused" ou erro de conexão com o backend
+SOLUÇÃO:
+- Verifique se o backend está rodando
+- Para emulador: use http://10.0.2.2:8000
+- Para dispositivo físico: use o IP local da máquina
+- Verifique se o firewall não está bloqueando a conexão
+
+PROBLEMA: "Package not found" ou erros de dependências
+SOLUÇÃO:
+- Execute: flutter pub get (no terminal)
+- Execute: flutter clean (limpa o cache)
+- Execute: flutter pub get novamente
+
+PROBLEMA: Build muito lento
+SOLUÇÃO:
+- Feche outros programas que usam muitos recursos
+- Aumente a memória RAM alocada ao emulador
+- Use um emulador com imagem de sistema mais leve (API 30)
+
+
+COMANDOS ÚTEIS NO TERMINAL
+================================================================================
+
+flutter doctor              - Verifica a configuração do Flutter
+flutter devices             - Lista dispositivos disponíveis
+flutter pub get              - Instala/atualiza dependências
+flutter clean                - Limpa arquivos de build
+flutter run                  - Executa o app no dispositivo selecionado
+flutter build apk            - Gera APK para instalação manual
+
+
+ESTRUTURA DO PROJETO
+================================================================================
+
+lib/
+  controllers/    - Controllers para gerenciar estado e comunicação com API
+  models/         - Modelos de dados (Transacao, Usuario, Categoria, etc.)
+  pages/          - Telas da aplicação
+  theme/          - Configurações de tema (cores, temas claro/escuro)
+  utils/          - Utilitários (endpoints, helpers)
+  widgets/        - Componentes reutilizáveis da UI
+
+android/         - Configurações específicas do Android
+ios/             - Configurações específicas do iOS
+pubspec.yaml     - Arquivo de configuração do projeto e dependências
+
+
+OBSERVAÇÕES IMPORTANTES
+================================================================================
+
+1. O tema escuro está configurado como padrão no aplicativo
+
+2. A URL do backend está configurada para emulador Android por padrão (10.0.2.2:8000)
+   - Para dispositivos físicos, ajuste o IP conforme necessário
+
+3. Certifique-se de que o backend possui as seguintes rotas implementadas:
+   - /login
+   - /signup
+   - /transacoes
+   - /categorias
+   - /formas-pagamento
+   - /estabelecimentos
+   - /metas-financeiras
+   - E outras conforme definidas em lib/utils/endpoints.dart
+
+4. O app usa as seguintes permissões:
+   - Internet (para comunicação com o backend)
+   - Câmera (para leitura de QR Code)
+   - Armazenamento (para SharedPreferences)
+
+
+CONTATO E SUPORTE
+================================================================================
+
+Para problemas ou dúvidas sobre o projeto, consulte:
+- Documentação Flutter: https://docs.flutter.dev/
+- Documentação Android Studio: https://developer.android.com/studio/intro
+- Meu Email: 71901230@aluno.faculdadecotemig.br
+
