@@ -37,7 +37,6 @@ class ThemeController extends ChangeNotifier {
   }
   
   /// Define o modo do tema e salva a preferência
-  /// 
   /// [mode] - O modo do tema a ser definido (claro ou escuro)
   Future<void> setThemeMode(ThemeMode mode) async {
     if (_themeMode == mode) return;
