@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_flow_app/models/meta_financeira_model.dart';
 import 'package:money_flow_app/models/transacao_model.dart';
+import 'package:money_flow_app/widgets/goal/meta_status_badge.dart';
 
 class MetaInfoCard extends StatelessWidget {
   final MetaFinanceira meta;
@@ -17,7 +18,7 @@ class MetaInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final currency = NumberFormat.simpleCurrency(locale: 'pt_BR');
     final dateFormat = DateFormat('dd/MM/yyyy');
-    
+
     // Calcula o progresso
     double receitas = 0;
     double despesas = 0;
@@ -29,11 +30,13 @@ class MetaInfoCard extends StatelessWidget {
       }
     }
     final progressoAtual = receitas - despesas;
-    final progressPercentage = meta.valor > 0 
-        ? (progressoAtual / meta.valor).clamp(0.0, 1.0) 
+
+    // Calcula o status da meta
+    final status = meta.getStatus(progressoAtual);
+    final progressPercentage = meta.valor > 0
+        ? (progressoAtual / meta.valor).clamp(0.0, 1.0)
         : 0.0;
-    final isPositive = progressoAtual >= 0;
-    final progressColor = isPositive ? Colors.green : Colors.red;
+    final progressColor = MetaFinanceira.getColorForStatus(status);
 
     return Card(
       elevation: 2,
@@ -50,7 +53,7 @@ class MetaInfoCard extends StatelessWidget {
               ),
               const SizedBox(height: 12),
             ],
-            
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -60,15 +63,15 @@ class MetaInfoCard extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 4),
             Text(
               'Período: ${dateFormat.format(meta.dataInicio)} - ${dateFormat.format(meta.dataFim)}',
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Barra de progresso
             LinearProgressIndicator(
               value: progressPercentage,
@@ -76,9 +79,9 @@ class MetaInfoCard extends StatelessWidget {
               valueColor: AlwaysStoppedAnimation<Color>(progressColor),
               minHeight: 10,
             ),
-            
+
             const SizedBox(height: 8),
-            
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -99,6 +102,17 @@ class MetaInfoCard extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+
+            const SizedBox(height: 16),
+
+            // Badge de status abaixo (centralizado)
+            Center(
+              child: MetaStatusBadge(
+                status: status,
+                progressoAtual: progressoAtual,
+                valorMeta: meta.valor,
+              ),
             ),
           ],
         ),

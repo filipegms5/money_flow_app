@@ -50,24 +50,28 @@ class MetaFinanceiraController extends BaseController {
 
     if (response.statusCode == 200) {
       final dynamic jsonData = jsonDecode(response.body);
-      
+
       List<dynamic> transacoesList = [];
-      
+
       if (jsonData is List) {
         transacoesList = jsonData;
       } else if (jsonData is Map) {
         // Backend retorna {despesas: [...], receitas: [...]}
-        if (jsonData.containsKey('despesas')) {
+        if (jsonData.containsKey('despesas') && jsonData['despesas'] != null) {
           transacoesList.addAll(jsonData['despesas'] as List);
         }
-        if (jsonData.containsKey('receitas')) {
+        if (jsonData.containsKey('receitas') && jsonData['receitas'] != null) {
           transacoesList.addAll(jsonData['receitas'] as List);
         }
+      } else if (jsonData == null) {
+        return [];
       } else {
         throw Exception('Formato de resposta inesperado: $jsonData');
       }
-      
+
       return transacoesList.map((json) => Transacao.fromJson(json)).toList();
+    } else if (response.statusCode == 404) {
+      return [];
     } else {
       throw Exception('Erro ao carregar transações da meta: ${response.statusCode}');
     }

@@ -5,6 +5,7 @@ import 'package:money_flow_app/controllers/transacao_controller.dart';
 import 'package:money_flow_app/models/meta_financeira_model.dart';
 import 'package:money_flow_app/pages/criar_meta_page.dart';
 import 'package:money_flow_app/pages/detalhes_meta_page.dart';
+import 'package:money_flow_app/widgets/goal/meta_status_badge.dart';
 
 class MetaFinanceiraCard extends StatefulWidget {
   const MetaFinanceiraCard({super.key});
@@ -217,10 +218,11 @@ class _GoalProgressView extends StatelessWidget {
   Widget build(BuildContext context) {
     final currency = NumberFormat.simpleCurrency(locale: 'pt_BR');
     final dateFormat = DateFormat('dd/MM/yyyy');
-    
+
+    // Calcula o status da meta
+    final status = meta.getStatus(progressoAtual);
     final progressPercentage = meta.valor > 0 ? (progressoAtual / meta.valor).clamp(0.0, 1.0) : 0.0;
-    final isPositive = progressoAtual >= 0;
-    final progressColor = isPositive ? Colors.green : Colors.red;
+    final progressColor = MetaFinanceira.getColorForStatus(status);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +234,7 @@ class _GoalProgressView extends StatelessWidget {
           ),
           const SizedBox(height: 8),
         ],
-        
+
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -246,9 +248,9 @@ class _GoalProgressView extends StatelessWidget {
             ),
           ],
         ),
-        
+
         const SizedBox(height: 12),
-        
+
         // Barra de progresso
         LinearProgressIndicator(
           value: progressPercentage,
@@ -256,9 +258,9 @@ class _GoalProgressView extends StatelessWidget {
           valueColor: AlwaysStoppedAnimation<Color>(progressColor),
           minHeight: 8,
         ),
-        
+
         const SizedBox(height: 8),
-        
+
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -279,6 +281,17 @@ class _GoalProgressView extends StatelessWidget {
               ),
             ),
           ],
+        ),
+
+        const SizedBox(height: 12),
+
+        // Badge de status abaixo (centralizado)
+        Center(
+          child: MetaStatusBadge(
+            status: status,
+            progressoAtual: progressoAtual,
+            valorMeta: meta.valor,
+          ),
         ),
       ],
     );
