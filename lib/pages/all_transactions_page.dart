@@ -6,6 +6,7 @@ import 'package:money_flow_app/models/categoria_model.dart';
 import 'package:money_flow_app/widgets/transactions/transactions_filter_card.dart';
 import 'package:money_flow_app/widgets/transactions/transactions_list_card.dart';
 import 'package:money_flow_app/widgets/liquid_glass_app_bar.dart';
+import 'package:money_flow_app/widgets/transactions/export_button.dart';
 
 class AllTransactionsPage extends StatefulWidget {
   const AllTransactionsPage({super.key});
@@ -107,8 +108,11 @@ class _AllTransactionsPageState extends State<AllTransactionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const LiquidGlassAppBar(
+      appBar: LiquidGlassAppBar(
         titleText: 'Todas as Transações',
+        actions: [
+          ExportButton(transacoes: _filteredTransacoes),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(bottom: 32.0),
